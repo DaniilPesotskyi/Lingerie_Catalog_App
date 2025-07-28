@@ -1,8 +1,15 @@
-import css from './CatalogPage.module.css'
+import ProductsList from "./ProductsList.tsx";
 
 const CatalogPage = () => {
     return (
-        <h1 className={css.title}>CatalogPage</h1>
+        <>
+            <h1>CatalogPage</h1>
+            {/*Search*/}
+
+            {/*FilterButton*/}
+
+            <ProductsList/>
+        </>
     )
 }
 
