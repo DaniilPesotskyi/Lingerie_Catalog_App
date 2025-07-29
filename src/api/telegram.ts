@@ -10,5 +10,9 @@ export const getChatMember = async (id: number) => {
         }),
     });
 
-    return response.json()
+    if (!response.ok) {
+        throw new Error(`Error with status: ${response.status}`);
+    }
+
+    return await response.json();
 }

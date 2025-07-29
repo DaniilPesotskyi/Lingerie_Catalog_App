@@ -1,15 +1,19 @@
-import ProductsList from "./ProductsList.tsx";
+import {Container} from "@/components";
+
+import ProductsList from "./ProductsList/ProductsList.tsx";
+
+import {PageHeading} from "@/pages/CatalogPage/styles.ts";
 
 const CatalogPage = () => {
     return (
-        <>
-            <h1>CatalogPage</h1>
+        <Container>
+            <PageHeading>Каталог</PageHeading>
             {/*Search*/}
 
             {/*FilterButton*/}
 
             <ProductsList/>
-        </>
+        </Container>
     )
 }
 

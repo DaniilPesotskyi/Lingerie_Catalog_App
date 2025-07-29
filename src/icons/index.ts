@@ -1,0 +1,1 @@
+export {default as NoPhotographyIcon} from './NoPhotographyIcon.tsx'

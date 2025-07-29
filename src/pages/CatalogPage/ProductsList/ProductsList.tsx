@@ -7,7 +7,10 @@ import type {IProductPreview} from "@/types/product";
 
 import {getProducts} from "@/api/products.ts";
 
-import ProductCard from "@/components/ProductCard/ProductCard.tsx";
+import ProductCard from "../ProductCard/ProductCard.tsx";
+
+import {StyledLastElement, StyledProductsList} from "./styles.ts";
+import {SpinnerLoader} from "@/components";
 
 const ProductsList = () => {
     const {ref, inView} = useInView({
@@ -48,7 +51,7 @@ const ProductsList = () => {
 
     return (
         <>
-            <ul>
+            <StyledProductsList>
                 {products.pages.map((page, i) => (
                     <React.Fragment key={i}>
                         {page.map((product, i) => (
@@ -58,14 +61,15 @@ const ProductsList = () => {
                         ))}
                     </React.Fragment>
                 ))}
-            </ul>
+            </StyledProductsList>
             {!isFetching && (
-                <div ref={ref}>
+                <StyledLastElement ref={ref}>
                     {!hasNextPage && products?.pages && (
-                        <p>Це весь наш товар</p>
+                        <>Це весь наш товар</>
                     )}
-                </div>
+                </StyledLastElement>
             )}
+            <SpinnerLoader show={isFetching}/>
         </>
     )
 }
