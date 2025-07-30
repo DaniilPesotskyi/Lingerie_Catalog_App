@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 import {Link} from "react-router-dom";
 
@@ -8,7 +8,7 @@ export const StyledWrap = styled(Link)`
     padding: 10px;
 
     border-radius: var(--border-radius);
-    background-color: #f3f3f3;
+    background-color: var(--secondary-bg-color);
 `
 
 export const StyledHeading = styled.div`
@@ -43,6 +43,7 @@ export const StyledArticle = styled.p`
     margin-bottom: 6px;
 
     font-size: 16px;
+    color: var(--secondary-text-color);
 `
 
 export const StyledColorsList = styled.ul`
@@ -55,7 +56,26 @@ export const StyledColorItem = styled.li`
     height: 15px;
 
     border-radius: var(--border-radius);
-    background-color: #00A841;
+`
+
+export const designsListStyles = css`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    
+    margin-top: 10px;
+`
+
+export const StyledDesignItem = styled.li`
+    padding: 3px 5px;
+
+    border: 1px solid var(--separator-color);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-color);
+
+    font-size: 14px;
+    color: var(--secondary-text-color);
 `
 
 export const StyledPrices = styled.ul`
@@ -66,7 +86,7 @@ export const StyledPrices = styled.ul`
     margin-top: 10px;
 
     border-radius: var(--border-radius);
-    background-color: #ffffff;
+    background-color: var(--bg-color);
 `
 
 export const StyledPriceItem = styled.li`

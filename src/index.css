@@ -1,6 +1,18 @@
 :root {
     --accent-color: #a06b91;
 
+    --bg-color: var(--tg-theme-bg-color);
+    --secondary-bg-color: var(--tg-theme-secondary-bg-color);
+
+    --selected-item-color: #0088cc;
+    --selected-item-bg-color: #f4faff;
+
+
+    --text-color: var(--tg-theme-text-color);
+    --secondary-text-color: var(--tg-theme-subtitle-text-color);
+
+    --separator-color: var(--tg-theme-section-separator-color);
+
     /*ALERT*/
     --alert-error-border-color: #FF9494;
     --alert-error-bg-color: #FFD6D6;
@@ -47,7 +59,10 @@ body {
     margin: 0;
     padding: 0;
 
+    background-color: var(--bg-color);
+
     font-family: var(--primary-ff), serif;
+    color: var(--text-color);
 }
 
 h1,

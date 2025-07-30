@@ -19,8 +19,10 @@ import {
     StyledPrices,
     StyledPriceItem,
     StyledPriceLabel,
-    StyledPriceValue, NoImageStub
+    StyledPriceValue, NoImageStub, designsListStyles, StyledDesignItem
 } from "./styles.ts";
+
+import {ExpandableContent} from "@/components";
 
 interface IProductCardProps {
     item: IProductPreview
@@ -34,6 +36,8 @@ const ProductCard: FC<IProductCardProps> = ({item}) => {
     const wholePrice = item.price && item.discount ? getDiscountPrice(item.price, item.discount) : item.price
     const dropPrice = item.price_d && item.discount ? getDiscountPrice(item.price_d, item.discount) : item.price_d
     const retailPrice = item.price_r
+
+    const designs = item.design?.split(',').filter((item) => item !== ' ') || []
 
     return (
         <StyledWrap to={`/${item.article}`}>
@@ -59,6 +63,11 @@ const ProductCard: FC<IProductCardProps> = ({item}) => {
                     </StyledColorsList>
                 </div>
             </StyledHeading>
+            <ExpandableContent component={'ul'} maxHeight={55} customStyles={designsListStyles}>
+                {designs.map((item) => (
+                    <StyledDesignItem>{item}</StyledDesignItem>
+                ))}
+            </ExpandableContent>
             {hasAccess && (
                 <StyledPrices>
                     <StyledPriceItem>

@@ -22,7 +22,7 @@ export const StyledSpinner = styled.span`
     width: 40px;
     height: 40px;
 
-    border: 7px solid #e0e0e0;
+    border: 7px solid var(--secondary-bg-color);
     border-top: 7px solid var(--accent-color);
     border-radius: 50%;
 `
