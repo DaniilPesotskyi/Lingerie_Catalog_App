@@ -11,7 +11,7 @@
     --text-color: var(--tg-theme-text-color);
     --secondary-text-color: var(--tg-theme-subtitle-text-color);
 
-    --separator-color: var(--tg-theme-section-separator-color);
+    --separator-color: rgba(0, 0, 0, 0.10);
 
     /*ALERT*/
     --alert-error-border-color: #FF9494;
@@ -96,6 +96,10 @@ img {
 
 *::-webkit-scrollbar {
     display: none;
+}
+
+svg {
+    fill: var(--text-color);
 }
 
 .no-scroll {
