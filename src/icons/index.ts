@@ -9,3 +9,6 @@ export {default as CategoryIcon} from './CategoryIcon.tsx'
 export {default as DesignIcon} from './DesignIcon.tsx'
 export {default as ColorIcon} from './ColorIcon.tsx'
 export {default as SizeIcon} from './SizeIcon.tsx'
+
+export {default as CopyIcon} from './CopyIcon.tsx'
+export {default as WebIcon} from './WebIcon.tsx'

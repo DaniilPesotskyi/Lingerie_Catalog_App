@@ -11,7 +11,7 @@
     --text-color: var(--tg-theme-text-color);
     --secondary-text-color: var(--tg-theme-subtitle-text-color);
 
-    --separator-color: rgba(0, 0, 0, 0.10);
+    --separator-color: rgba(148, 148, 148, 0.3);
 
     /*ALERT*/
     --alert-error-border-color: #FF9494;
