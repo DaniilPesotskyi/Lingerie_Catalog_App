@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 
 import type {IProductExtended} from "@/types/product";
 
+import {getDiscountPrice} from "@/utils";
+
 import {useTelegram} from "@/hooks";
 
 import {getProductById} from "@/api/products.ts";
@@ -24,7 +26,6 @@ import {
     StyledSubTitle,
     StyledTitle
 } from "./styles.ts";
-import {getDiscountPrice} from "@/utils";
 
 const ProductPage = () => {
     const {id} = useParams();

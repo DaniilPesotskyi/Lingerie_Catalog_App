@@ -7,6 +7,9 @@
     --selected-item-color: #0088cc;
     --selected-item-bg-color: #f4faff;
 
+    --success-color: #00A841;
+    --danger-color: var(--tg-theme-destructive-text-color);
+
 
     --text-color: var(--tg-theme-text-color);
     --secondary-text-color: var(--tg-theme-subtitle-text-color);
