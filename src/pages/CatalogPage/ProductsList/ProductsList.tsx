@@ -17,7 +17,7 @@ const ProductsList = () => {
         rootMargin: '400px'
     })
 
-    const searchParams = useSearchParams()
+    const [searchParams] = useSearchParams()
 
     const {
         data: products,

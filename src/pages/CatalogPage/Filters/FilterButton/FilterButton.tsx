@@ -1,4 +1,6 @@
 import type {ComponentType, FC} from "react";
+import {useSearchParams} from "react-router-dom";
+
 import type {FiltersToRenderType} from "@/types/filters";
 
 import FILTERS_LABEL from "@/constants/filtersLabel.ts";
@@ -7,7 +9,7 @@ import {ArticleIcon, BrandIcon, CategoryIcon, ColorIcon, DesignIcon, SizeIcon} f
 
 import {Button} from "@/components";
 
-import {filterButtonStyles} from "./styles.ts";
+import {filterButtonStyles, FiltersQnt} from "./styles.ts";
 
 interface IFilterButtonProps {
     filter: keyof FiltersToRenderType;
@@ -24,6 +26,10 @@ const FILTER_ICONS: Record<keyof FiltersToRenderType, ComponentType> = {
 } as const;
 
 const FilterButton: FC<IFilterButtonProps> = ({filter, onClick}) => {
+    const [searchParams] = useSearchParams()
+
+    const options = searchParams.getAll(filter)
+
     const IconComponent = FILTER_ICONS[filter];
 
     const handleClick = () => {
@@ -38,6 +44,8 @@ const FilterButton: FC<IFilterButtonProps> = ({filter, onClick}) => {
         >
             <IconComponent/>
             {FILTERS_LABEL[filter]}
+
+            {options.length > 0 ? <FiltersQnt>{options.length}</FiltersQnt> : ''}
         </Button>
     );
 };

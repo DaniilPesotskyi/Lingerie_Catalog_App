@@ -67,11 +67,9 @@ const Filters = () => {
 
                     if (currentHasClass !== hasClass) {
                         if (currentHasClass) {
-                            // меню только что открылось
                             unsubscribeBackButton = addBackButtonHandler(backHandler);
                             showBackButton();
                         } else {
-                            // меню закрывается
                             if (unsubscribeBackButton) {
                                 unsubscribeBackButton();
                                 unsubscribeBackButton = null;
@@ -128,7 +126,7 @@ const Filters = () => {
 
                 {hasActiveFilters && (
                     <IconButton onClick={handleClearAllFilters}>
-                        <ClearFilterIcon/>
+                        <ClearFilterIcon />
                     </IconButton>
                 )}
 
@@ -156,7 +154,7 @@ const Filters = () => {
                     >
                         <Options
                             filter={openedFilter}
-                            options={[]}
+                            options={filters[openedFilter]}
                             onClose={() => setOpenedFilter(null)}
                         />
                     </StyledPickerWrap>

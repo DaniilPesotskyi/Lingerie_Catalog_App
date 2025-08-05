@@ -27,6 +27,10 @@ export const StyledHeading = styled.div`
 
     width: 100%;
     padding: 20px 0;
+    
+    & > button > svg {
+        fill: var(--danger-color);
+    }
 `
 
 export const StyledTitle = styled.h1`
@@ -44,7 +48,7 @@ export const StyledPickerWrap = styled.div`
     height: 100%;
     padding: 0 10px;
     
-    background-color: var(--bg-color);
+    background-color: var(--secondary-bg-color);
 
     overflow: scroll;
 `

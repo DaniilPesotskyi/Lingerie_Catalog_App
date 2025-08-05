@@ -1,19 +1,18 @@
-import {type FC, useEffect, useState} from "react";
+import {type FC, useEffect, useMemo, useState} from "react";
+import {useSearchParams} from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
 
-import type {FiltersToRenderType, IArticleItem, IDesignItem, IFilterItem} from "@/types/filters";
+import type {FiltersToRenderType, IArticleItem, IDesignItem, IFilterItem, IFilters} from "@/types/filters";
 
 import FILTERS_LABEL from "@/constants/filtersLabel.ts";
 
+import {getFilters} from "@/api/filters.ts";
+
 import {useTelegram} from "@/hooks";
 
-import {FilterIcon} from "@/icons";
+import {SpinnerLoader} from "@/components";
 
-import {IconButton} from "@/components";
-
-import {StyledOptionsHeading, StyledOptionsList, StyledOptionTitle} from "./styles.ts";
-import {useSearchParams} from "react-router-dom";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getFilters} from "@/api/filters.ts";
+import {StyledOptionsButton, StyledOptionsHeading, StyledOptionsList, StyledOptionTitle} from "./styles.ts";
 
 interface IOptionsProps {
     filter: keyof FiltersToRenderType
@@ -24,40 +23,72 @@ interface IOptionsProps {
 
 const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
     const {
+        telegram,
         addBackButtonHandler,
         addMainButtonHandler,
         showMainButton,
-        hideMainButto,
-        enableMainButton,
-        disableMainButtonn
+        hideMainButton,
     } = useTelegram()
     const [searchParams, setSearchParams] = useSearchParams()
-    const queryClient = useQueryClient()
 
     const currentValues = searchParams.getAll(filter);
     const [selectedFilters, setSelectedFilters] = useState<string[]>(currentValues)
 
-    const initialFilters = queryClient.getQueryData<FiltersToRenderType>(['filters'])
-
     const querySearchParams = new URLSearchParams(searchParams.toString())
     querySearchParams.delete(filter)
 
-    const {data: filters} = useQuery({
+    const {data: filters, isLoading} = useQuery<IFilters>({
         queryKey: ['filters', querySearchParams.toString()],
         queryFn: async () => await getFilters(querySearchParams.toString())
     })
 
     useEffect(() => {
         const unsubscribeBackButton = addBackButtonHandler(onClose)
-        const unsubscrineMainButton = addMainButtonHandler()
+        telegram.setHeaderColor('secondary_bg_color')
+
+        document.body.classList.add('no-scroll')
         return () => {
             unsubscribeBackButton()
+            telegram.setHeaderColor('bg_color')
+
+            hideMainButton()
+
+            document.body.classList.remove('no-scroll')
         };
     }, [])
 
-    const optionsToRender = () => {
-        const options = initialFilters?.[filter] || []
+    const acceptFilters = () => {
+        const newParams = new URLSearchParams(searchParams.toString());
+        newParams.delete(filter);
+        selectedFilters.forEach(val => newParams.append(filter, val));
+        setSearchParams(newParams);
+        onClose();
+    };
 
+    const toggleItem = (value: string) => {
+        setSelectedFilters(prev =>
+            prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
+        );
+    };
+
+    useEffect(() => {
+        const isChanged = JSON.stringify([...selectedFilters].sort()) !== JSON.stringify([...currentValues].sort());
+
+        const unsubscribeMainButton = addMainButtonHandler(acceptFilters, 'ЗАСТОСУВАТИ')
+
+        if (isChanged) {
+            showMainButton()
+        } else {
+            hideMainButton()
+        }
+
+        return () => {
+            unsubscribeMainButton()
+        }
+
+    }, [selectedFilters, currentValues])
+
+    const allOptions = useMemo(() => {
         if (filter === 'articles') {
             return options.map(o => (o as IArticleItem).article)
         }
@@ -68,20 +99,52 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
         }
 
         return options.map(o => (o as IFilterItem).value)
+    }, [filters, filter])
+
+    const availableOptions = useMemo(() => {
+        if (!filters) return []
+
+        if (filter === 'articles') {
+            return filters[filter].map(item => item.article)
+        }
+
+        if (filter === 'designs') {
+            const elements = filters[filter].flatMap(el => [...el.designs, ...el.materials])
+            return Array.from(new Set(elements))
+        }
+
+        return filters[filter].map(item => item.value)
+    }, [filters, filter]);
+
+    const optionsToRender = () => {
+        return [...allOptions]
+            // .filter(item => item.toLowerCase().includes(searchQuery.toLowerCase()))
+            .sort((a) =>
+                availableOptions.includes(a) ? -1 : 1
+            );
+    }
+
+    if (isLoading) {
+        return <SpinnerLoader show={true}/>
     }
 
     return (
         <>
             <StyledOptionsHeading>
                 <StyledOptionTitle>{FILTERS_LABEL[filter]}</StyledOptionTitle>
-                <IconButton onClick={onClose}>
-                    <FilterIcon/>
-                </IconButton>
             </StyledOptionsHeading>
 
             <StyledOptionsList>
                 {optionsToRender().map(i => (
-                    <li key={i}>{i}</li>
+                    <li key={i}>
+                        <StyledOptionsButton
+                            onClick={() => toggleItem(i)}
+                            active={selectedFilters.includes(i)}
+                            disabled={!availableOptions.includes(i)}
+                        >
+                            {i}
+                        </StyledOptionsButton>
+                    </li>
                 ))}
             </StyledOptionsList>
 
