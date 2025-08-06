@@ -26,6 +26,12 @@ export const designsCustomStyles = css`
     margin-bottom: 10px;
 `
 
+export const StyledDesignItem = styled.span<{active: boolean}>`
+    ${({active}) => active && css`
+        color: var(--selected-item-color);
+    `}
+`
+
 export const StyledMaterial = styled.p`
     margin-bottom: 10px;
 `
@@ -70,7 +76,7 @@ export const StyledActions = styled.div`
 
 export const StyledEmptyText = styled.p`
     width: 100%;
-    
+xw    
     font-size: 20px;
     text-align: center;
 `

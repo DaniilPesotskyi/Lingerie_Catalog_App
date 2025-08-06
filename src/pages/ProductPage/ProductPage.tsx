@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {Outlet, useNavigate, useParams} from "react-router-dom";
+import {Outlet, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -11,7 +11,7 @@ import {useTelegram} from "@/hooks";
 
 import {getProductById} from "@/api/products.ts";
 
-import {CopyIcon, WebIcon} from "@/icons";
+import {LinkIcon, WebIcon} from "@/icons";
 
 import {Button, Container, ExpandableText, SpinnerLoader} from "@/components";
 
@@ -20,7 +20,7 @@ import Gallery from "./Gallery/Gallery.tsx";
 import {
     designsCustomStyles,
     StyledActions,
-    StyledArticle, StyledEmptyText,
+    StyledArticle, StyledDesignItem, StyledEmptyText,
     StyledMaterial, StyledPriceItem, StyledPriceLabel,
     StyledPrices, StyledPriceValue,
     StyledSubTitle,
@@ -29,6 +29,7 @@ import {
 
 const ProductPage = () => {
     const {id} = useParams();
+    const [searchParams] = useSearchParams()
     const navigate = useNavigate();
     const {
         addBackButtonHandler,
@@ -83,7 +84,9 @@ const ProductPage = () => {
     if (!product) return <StyledEmptyText>Товару немає в наявності або взагалі не існує</StyledEmptyText>
 
     const name = product.name.replace(/\s*\(.*?\)\s*/g, '')
-    const designs = product.design?.split(',').filter((item) => item !== ' ').join(',') || 'Характеристики відсутні'
+    const designs = product.design?.split(',').filter((item) => item !== ' ' && item !== '') || []
+
+    const activeDesigns = searchParams.getAll('designs')
 
     const wholePrice = product.price && product.discount ? getDiscountPrice(product.price, product.discount) : product.price
     const dropPrice = product.price_d && product.discount ? getDiscountPrice(product.price_d, product.discount) : product.price_d
@@ -107,7 +110,12 @@ const ProductPage = () => {
                 maxChars={80}
                 customStyles={designsCustomStyles}
             >
-                {designs}
+                {designs.map((item, index) => (
+                    <>
+                        <StyledDesignItem active={activeDesigns.includes(item.trim())}>{item}</StyledDesignItem>
+                        {index !== designs.length - 1 && ','}
+                    </>
+                ))}
             </ExpandableText>
 
             <StyledSubTitle>Матеріал</StyledSubTitle>
@@ -131,7 +139,7 @@ const ProductPage = () => {
 
             <StyledActions>
                 <Button variant={'outlined'} onClick={handleCopy}>
-                    <CopyIcon/>
+                    <LinkIcon/>
                     Посилання
                 </Button>
                 <Button
