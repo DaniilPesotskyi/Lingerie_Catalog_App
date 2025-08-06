@@ -98,7 +98,7 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
             return Array.from(new Set(elements))
         }
 
-        return options.map(o => (o as IFilterItem).value)
+        return options.map(o => (o as IFilterItem))
     }, [filters, filter])
 
     const availableOptions = useMemo(() => {
@@ -113,7 +113,7 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
             return Array.from(new Set(elements))
         }
 
-        return filters[filter].map(item => item.value)
+        return filters[filter].map(item => item)
     }, [filters, filter]);
 
     const optionsToRender = () => {

@@ -22,6 +22,7 @@ export interface IDesignItem {
     "materials": string[],
 }
 
-export type IFilterItem = {value: string, count: number}
+// export type IFilterItem = {value: string, count: number}
+export type IFilterItem = string
 
 export type FiltersToRenderType = Omit<IFilters, 'min_price' | 'max_price'>;
