@@ -77,21 +77,21 @@ const ProductCard: FC<IProductCardProps> = ({item}) => {
                 <StyledPrices>
                     <StyledPriceItem>
                         <StyledPriceLabel>ОПТ</StyledPriceLabel>
-                        <StyledPriceValue discount={hasDiscount}>{wholePrice}</StyledPriceValue>
+                        <StyledPriceValue discount={hasDiscount}>{wholePrice} грн</StyledPriceValue>
                         {hasDiscount && (
                             <StyledBeforePriceValue>{item.price}</StyledBeforePriceValue>
                         )}
                     </StyledPriceItem>
                     <StyledPriceItem>
                         <StyledPriceLabel>ДРОП</StyledPriceLabel>
-                        <StyledPriceValue discount={hasDiscount}>{dropPrice}</StyledPriceValue>
+                        <StyledPriceValue discount={hasDiscount}>{dropPrice} грн</StyledPriceValue>
                         {hasDiscount && (
                             <StyledBeforePriceValue>{item.price_d}</StyledBeforePriceValue>
                         )}
                     </StyledPriceItem>
                     <StyledPriceItem>
                         <StyledPriceLabel>РОЗДРІБ</StyledPriceLabel>
-                        <StyledPriceValue>{retailPrice}</StyledPriceValue>
+                        <StyledPriceValue>{retailPrice} грн</StyledPriceValue>
                     </StyledPriceItem>
                 </StyledPrices>
             )}

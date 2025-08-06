@@ -91,7 +91,7 @@ export const StyledPrices = styled.ul`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 
-    height: 60px;
+    height: 65px;
     margin-top: 10px;
 
     border-radius: var(--border-radius);
@@ -99,6 +99,8 @@ export const StyledPrices = styled.ul`
 `
 
 export const StyledPriceItem = styled.li`
+    position: relative;
+    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,7 +123,7 @@ export const StyledPriceValue = styled.p<{discount?: boolean}>`
 
 export const StyledBeforePriceValue = styled.span`
     position: absolute;
-    bottom: 4px;
+    bottom: 3px;
     right: 50%;
 
     transform: translateX(50%);

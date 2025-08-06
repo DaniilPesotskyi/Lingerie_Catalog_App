@@ -47,13 +47,15 @@ export const StyledPrices = styled.ul`
 `
 
 export const StyledPriceItem = styled.li`
+    position: relative;
+    
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 3px;
 
-    height: 60px;
+    height: 70px;
 `
 
 export const StyledPriceLabel = styled.h3`
@@ -65,6 +67,22 @@ export const StyledPriceLabel = styled.h3`
 export const StyledPriceValue = styled.p<{ discount?: boolean }>`
     font-size: 18px;
     font-weight: 500;
+    
+    ${({discount}) => discount && css`
+        color: var(--discount-color);
+    `}
+`
+
+export const StyledPriceBeforeValue = styled.span`
+    position: absolute;
+    bottom: 3px;
+    right: 50%;
+
+    transform: translateX(50%);
+
+    font-size: 14px;
+    text-decoration-line: line-through;
+    color: var(--secondary-text-color);
 `
 
 export const StyledActions = styled.div`
@@ -76,7 +94,7 @@ export const StyledActions = styled.div`
 
 export const StyledEmptyText = styled.p`
     width: 100%;
-xw    
+    
     font-size: 20px;
     text-align: center;
 `

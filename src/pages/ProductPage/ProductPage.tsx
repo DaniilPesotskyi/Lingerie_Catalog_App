@@ -21,7 +21,7 @@ import {
     designsCustomStyles,
     StyledActions,
     StyledArticle, StyledDesignItem, StyledEmptyText,
-    StyledMaterial, StyledPriceItem, StyledPriceLabel,
+    StyledMaterial, StyledPriceBeforeValue, StyledPriceItem, StyledPriceLabel,
     StyledPrices, StyledPriceValue,
     StyledSubTitle,
     StyledTitle
@@ -92,8 +92,10 @@ const ProductPage = () => {
     const dropPrice = product.price_d && product.discount ? getDiscountPrice(product.price_d, product.discount) : product.price_d
     const retailPrice = product.price_r
 
+    const hasDiscount = Boolean(product.discount)
+
     const handleCopy = () => {
-        copyToClipboard('')
+        copyToClipboard(`https://t.me/Lingerie_mini_Catalog_Bot/app?startapp=${product.article}`)
         toast.success('Скопійованно!')
     }
 
@@ -125,11 +127,17 @@ const ProductPage = () => {
             <StyledPrices>
                 <StyledPriceItem>
                     <StyledPriceLabel>ОПТ</StyledPriceLabel>
-                    <StyledPriceValue>{wholePrice} грн</StyledPriceValue>
+                    <StyledPriceValue discount={hasDiscount}>{wholePrice} грн</StyledPriceValue>
+                    {hasDiscount && (
+                        <StyledPriceBeforeValue>{product.price}</StyledPriceBeforeValue>
+                    )}
                 </StyledPriceItem>
                 <StyledPriceItem>
                     <StyledPriceLabel>ДРОП</StyledPriceLabel>
-                    <StyledPriceValue>{dropPrice} грн</StyledPriceValue>
+                    <StyledPriceValue discount={hasDiscount}>{dropPrice} грн</StyledPriceValue>
+                    {hasDiscount && (
+                        <StyledPriceBeforeValue>{product.price_d}</StyledPriceBeforeValue>
+                    )}
                 </StyledPriceItem>
                 <StyledPriceItem>
                     <StyledPriceLabel>РОЗДРІБ</StyledPriceLabel>
