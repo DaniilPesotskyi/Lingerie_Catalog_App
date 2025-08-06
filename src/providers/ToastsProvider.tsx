@@ -9,12 +9,7 @@ const ToastsProvider: FC<IToastsProviderProps> = ({children}) => {
     return (
         <>
             {children}
-            <Toaster
-                containerStyle={{
-                    backgroundColor: 'var(--bg-color)',
-                    color: 'var(--text-color)'
-                }}
-            />
+            <Toaster/>
         </>
     )
 }
