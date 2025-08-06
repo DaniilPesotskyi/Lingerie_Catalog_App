@@ -110,7 +110,23 @@ export const StyledPriceLabel = styled.h4`
     font-weight: 400;
 `
 
-export const StyledPriceValue = styled.p`
+export const StyledPriceValue = styled.p<{discount?: boolean}>`
     font-size: 16px;
     font-weight: 500;
+
+    ${({discount}) => discount && css`
+        color: var(--discount-color);
+    `}
+`
+
+export const StyledBeforePriceValue = styled.span`
+    position: absolute;
+    bottom: 4px;
+    right: 50%;
+
+    transform: translateX(50%);
+
+    font-size: 14px;
+    text-decoration-line: line-through;
+    color: var(--secondary-text-color);
 `

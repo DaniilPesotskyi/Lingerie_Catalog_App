@@ -20,7 +20,7 @@ import {
     StyledPrices,
     StyledPriceItem,
     StyledPriceLabel,
-    StyledPriceValue, NoImageStub, designsListStyles, StyledDesignItem
+    StyledPriceValue, NoImageStub, designsListStyles, StyledDesignItem, StyledBeforePriceValue
 } from "./styles.ts";
 
 import {ExpandableContent} from "@/components";
@@ -41,6 +41,8 @@ const ProductCard: FC<IProductCardProps> = ({item}) => {
 
     const designs = item.design?.split(',').filter((item) => item !== ' ' && item !== '') || []
     const activeDesigns = searchParams.getAll('designs')
+
+    const hasDiscount = Boolean(item.discount)
 
     return (
         <StyledWrap to={`/${item.article}?${searchParams.toString()}`}>
@@ -75,11 +77,17 @@ const ProductCard: FC<IProductCardProps> = ({item}) => {
                 <StyledPrices>
                     <StyledPriceItem>
                         <StyledPriceLabel>ОПТ</StyledPriceLabel>
-                        <StyledPriceValue>{wholePrice}</StyledPriceValue>
+                        <StyledPriceValue discount={hasDiscount}>{wholePrice}</StyledPriceValue>
+                        {hasDiscount && (
+                            <StyledBeforePriceValue>{item.price}</StyledBeforePriceValue>
+                        )}
                     </StyledPriceItem>
                     <StyledPriceItem>
                         <StyledPriceLabel>ДРОП</StyledPriceLabel>
-                        <StyledPriceValue>{dropPrice}</StyledPriceValue>
+                        <StyledPriceValue discount={hasDiscount}>{dropPrice}</StyledPriceValue>
+                        {hasDiscount && (
+                            <StyledBeforePriceValue>{item.price_d}</StyledBeforePriceValue>
+                        )}
                     </StyledPriceItem>
                     <StyledPriceItem>
                         <StyledPriceLabel>РОЗДРІБ</StyledPriceLabel>
