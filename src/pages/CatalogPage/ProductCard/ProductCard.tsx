@@ -1,4 +1,5 @@
 import {type FC, memo} from "react";
+import {useSearchParams} from "react-router-dom";
 
 import type {IProductPreview} from "@/types/product";
 
@@ -29,6 +30,7 @@ interface IProductCardProps {
 }
 
 const ProductCard: FC<IProductCardProps> = ({item}) => {
+    const [searchParams] = useSearchParams()
     const {hasAccess} = useUser()
 
     const name = item.name.replace(/\s*\(.*?\)\s*/g, '')
@@ -37,10 +39,11 @@ const ProductCard: FC<IProductCardProps> = ({item}) => {
     const dropPrice = item.price_d && item.discount ? getDiscountPrice(item.price_d, item.discount) : item.price_d
     const retailPrice = item.price_r
 
-    const designs = item.design?.split(',').filter((item) => item !== ' ') || []
+    const designs = item.design?.split(',').filter((item) => item !== ' ' && item !== '') || []
+    const activeDesigns = searchParams.getAll('designs')
 
     return (
-        <StyledWrap to={`/${item.article}`}>
+        <StyledWrap to={`/${item.article}?${searchParams.toString()}`}>
             <StyledHeading>
                 {item.photo_example ? (
                     <StyledImage src={item.photo_example || ''} alt="photo example"/>
@@ -65,7 +68,7 @@ const ProductCard: FC<IProductCardProps> = ({item}) => {
             </StyledHeading>
             <ExpandableContent component={'ul'} maxHeight={55} customStyles={designsListStyles}>
                 {designs.map((item) => (
-                    <StyledDesignItem>{item}</StyledDesignItem>
+                    <StyledDesignItem active={activeDesigns.includes(item.trim())}>{item}</StyledDesignItem>
                 ))}
             </ExpandableContent>
             {hasAccess && (

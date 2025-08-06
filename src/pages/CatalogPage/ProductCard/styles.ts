@@ -7,6 +7,7 @@ export const StyledWrap = styled(Link)`
 
     padding: 10px;
 
+    border: 1px solid var(--separator-color);
     border-radius: var(--border-radius);
     background-color: var(--secondary-bg-color);
 `
@@ -55,6 +56,7 @@ export const StyledColorItem = styled.li`
     width: 15px;
     height: 15px;
 
+    border: 1px solid var(--separator-color);
     border-radius: var(--border-radius);
 `
 
@@ -67,7 +69,7 @@ export const designsListStyles = css`
     margin-top: 10px;
 `
 
-export const StyledDesignItem = styled.li`
+export const StyledDesignItem = styled.li<{active: boolean}>`
     padding: 3px 5px;
 
     border: 1px solid var(--separator-color);
@@ -76,6 +78,13 @@ export const StyledDesignItem = styled.li`
 
     font-size: 14px;
     color: var(--secondary-text-color);
+    
+    ${({active}) => active && css`
+        border: 1px solid var(--selected-item-color);
+        background-color: var(--selected-item-bg-color);
+        
+        color: var(--selected-item-color);
+    `}
 `
 
 export const StyledPrices = styled.ul`

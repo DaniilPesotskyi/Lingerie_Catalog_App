@@ -7,10 +7,11 @@ import type {IProductPreview} from "@/types/product";
 
 import {getProducts} from "@/api/products.ts";
 
+import {SpinnerLoader} from "@/components";
+
 import ProductCard from "../ProductCard/ProductCard.tsx";
 
 import {StyledLastElement, StyledProductsList} from "./styles.ts";
-import {SpinnerLoader} from "@/components";
 
 const ProductsList = () => {
     const {ref, inView} = useInView({
@@ -45,8 +46,12 @@ const ProductsList = () => {
         }
     }, [fetchNextPage, inView])
 
+    if (!products && isFetching) {
+        return <SpinnerLoader show={isFetching}/>
+    }
+
     if (!products) {
-        return null
+        return <h1>Нічого не знайшли :(</h1>
     }
 
     return (

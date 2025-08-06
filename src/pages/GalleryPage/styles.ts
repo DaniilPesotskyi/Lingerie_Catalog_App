@@ -43,3 +43,11 @@ export const StylesPhotosList = styled.ul`
     flex-direction: column;
     gap: 10px;
 `
+
+export const StyledEmptyText = styled.p`
+    width: 100%;
+
+    font-size: 20px;
+    color: #ffffff;
+    text-align: center;
+`

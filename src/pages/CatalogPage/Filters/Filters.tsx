@@ -11,7 +11,7 @@ import type {FiltersToRenderType, IFilters} from "@/types/filters";
 
 import {ClearFilterIcon} from "@/icons";
 
-import {IconButton} from "@/components";
+import {IconButton, SpinnerLoader} from "@/components";
 
 import FilterButton from "./FilterButton/FilterButton.tsx";
 import Options from "./Options/Options.tsx";
@@ -110,7 +110,11 @@ const Filters = () => {
     }, [openedFilter]);
 
     if (!filters) {
-        return null
+        return (
+            <StyledFiltersWrap>
+                <SpinnerLoader show={true}/>
+            </StyledFiltersWrap>
+        )
     }
 
     const filtersToRender = Object.keys(filters).filter(filter => !['min_price', 'max_price'].includes(filter)) as Array<keyof FiltersToRenderType>

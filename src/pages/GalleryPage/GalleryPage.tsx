@@ -7,9 +7,11 @@ import type {IProductContent} from "@/types/product";
 
 import {useTelegram} from "@/hooks";
 
+import {getColorTranslation} from "@/utils";
+
 import {getProductContent} from "@/api/products.ts";
 
-import {StyledContentSelect, StyledGalleryContainer, StylesPhotosList} from "./styles.ts";
+import {StyledContentSelect, StyledEmptyText, StyledGalleryContainer, StylesPhotosList} from "./styles.ts";
 
 const variants = {
     hidden: {
@@ -21,10 +23,10 @@ const variants = {
 }
 
 const GalleryPage = () => {
-    const {telegram} = useTelegram()
+    const {telegram, showMainButton, hideMainButton} = useTelegram()
     const {id} = useParams()
 
-    const [currentContent, setCurrentContent] = useState<string>()
+    const [currentContent, setCurrentContent] = useState<string | null>(null)
 
     const {data: content} = useQuery<IProductContent>({
         queryKey: ['content', id],
@@ -34,13 +36,17 @@ const GalleryPage = () => {
     useEffect(() => {
         document.body.classList.add('no-scroll')
         telegram.setHeaderColor('#000000')
+        hideMainButton()
         return () => {
             document.body.classList.remove('no-scroll')
             telegram.setHeaderColor('bg_color')
+            showMainButton()
         }
     }, [])
 
-    if (!content) return <h1>GALLERY</h1>;
+    if (!content) {
+        return null
+    }
 
     const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         setCurrentContent(e.target.value)
@@ -67,7 +73,7 @@ const GalleryPage = () => {
         content: content.content
     }
 
-    const itemsToRender = items[currentContent as string] ? items[currentContent as string] : []
+    const itemsToRender = currentContent ? items[currentContent] : items[colors[0]]
 
     return (
         <StyledGalleryContainer
@@ -81,20 +87,23 @@ const GalleryPage = () => {
             <StyledContentSelect
                 name="content"
                 id='content'
-                value={currentContent}
                 onChange={handleChange}
             >
                 {options.map((item, i) => (
-                    <option key={i} value={item}>{item}</option>
+                    <option key={i} value={item}>{item !== 'content' ? getColorTranslation(item) : 'Контент'}</option>
                 ))}
             </StyledContentSelect>
-            <StylesPhotosList>
-                {itemsToRender.map((photo, index) => (
-                    <li key={index}>
-                        <img src={photo} alt="photo"/>
-                    </li>
-                ))}
-            </StylesPhotosList>
+            {itemsToRender.length > 0 ? (
+                <StylesPhotosList>
+                    {itemsToRender.map((photo, index) => (
+                        <li key={index}>
+                            <img src={photo} alt="photo"/>
+                        </li>
+                    ))}
+                </StylesPhotosList>
+            ) : (
+                <StyledEmptyText>Елементи відсутні</StyledEmptyText>
+            )}
         </StyledGalleryContainer>
 
     )

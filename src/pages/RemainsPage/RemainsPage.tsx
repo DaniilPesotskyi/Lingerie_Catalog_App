@@ -1,5 +1,9 @@
+import {useEffect} from "react";
+import {motion} from "framer-motion";
 import {useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
+
+import {useTelegram} from "@/hooks";
 
 import type {IProductExtended} from "@/types/product";
 
@@ -14,8 +18,6 @@ import {
     StyledRemainsTitle,
     StyledRemainsList
 } from "./styles.ts";
-import {useEffect} from "react";
-import {motion} from "framer-motion";
 
 const variants = {
     hidden: {
@@ -28,6 +30,7 @@ const variants = {
 
 const RemainsPage = () => {
     const {id} = useParams()
+    const {telegram, showMainButton, hideMainButton} = useTelegram()
 
     const {data: product} = useQuery<IProductExtended>({
         queryKey: ['product', id],
@@ -36,8 +39,12 @@ const RemainsPage = () => {
 
     useEffect(() => {
         document.body.classList.add('no-scroll')
+        telegram.setHeaderColor('secondary_bg_color')
+        hideMainButton()
         return () => {
             document.body.classList.remove('no-scroll')
+            telegram.setHeaderColor('bg_color')
+            showMainButton()
         }
     }, [])
 

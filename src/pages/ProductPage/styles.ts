@@ -67,3 +67,10 @@ export const StyledActions = styled.div`
 
     margin-bottom: 10px;
 `
+
+export const StyledEmptyText = styled.p`
+    width: 100%;
+    
+    font-size: 20px;
+    text-align: center;
+`

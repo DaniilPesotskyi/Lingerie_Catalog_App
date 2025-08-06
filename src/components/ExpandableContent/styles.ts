@@ -19,9 +19,7 @@ export const StyledToggleButton = styled.button`
     width: 100%;
 
     border: 0;
-    border-radius: var(--border-radius);
-    background-color: var(--bg-color);
-
+    background-color: transparent;
     font-size: 15px;
     padding: 5px;
     color: var(--selected-item-color);

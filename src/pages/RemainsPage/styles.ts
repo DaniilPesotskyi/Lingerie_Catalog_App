@@ -8,7 +8,7 @@ export const StyledRemainsContainer = styled.div`
     width: 100%;
     height: 100vh;
 
-    background-color: var(--bg-color);
+    background-color: var(--secondary-bg-color);
 
     z-index: 1;
 
@@ -27,7 +27,7 @@ export const StyledRemainsHeading = styled.div`
     
     padding: 6px 0;
     
-    background-color: var(--bg-color);
+    background-color: var(--secondary-bg-color);
 `
 
 export const StyledRemainsTitle = styled.h2`

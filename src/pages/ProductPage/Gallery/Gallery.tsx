@@ -12,25 +12,45 @@ import type {IProductContent} from "@/types/product";
 
 import {getProductContent} from "@/api/products.ts";
 
+import {NoPhotographyIcon} from "@/icons";
+
+import {SpinnerLoader} from "@/components";
+
 import Image from "./Image.tsx";
 
-import {StyledGallery} from "./styles.ts";
+import {loaderCustomStyles, StyledGallery} from "./styles.ts";
+
 
 const Gallery = () => {
     const {id} = useParams()
 
-    const {data: content} = useQuery<IProductContent>({
+    const {data: content, isLoading} = useQuery<IProductContent>({
         queryKey: ['content', id],
         queryFn: async () => await getProductContent(id as string)
     })
 
-    if (!content) return null;
+    if (isLoading) {
+        return (
+            <StyledGallery>
+                <SpinnerLoader show={true} customStyles={loaderCustomStyles}/>
+            </StyledGallery>
+        )
+    }
+
+    if (!content) {
+        return (
+            <StyledGallery>
+                <NoPhotographyIcon/>
+            </StyledGallery>
+        )
+    }
 
     const colors = Object.keys(content.photo)
 
     const slides = colors.length === 1
         ? content.photo[colors[0]].map(photo => ({color: colors[0], photo}))
         : colors.map(color => ({color, photo: content.photo[color][0]}));
+
 
     return (
         <StyledGallery>

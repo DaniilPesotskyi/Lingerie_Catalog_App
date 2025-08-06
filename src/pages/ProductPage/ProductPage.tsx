@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 import type {IProductExtended} from "@/types/product";
 
-import {getDiscountPrice} from "@/utils";
+import {copyToClipboard, getDiscountPrice} from "@/utils";
 
 import {useTelegram} from "@/hooks";
 
@@ -13,14 +13,14 @@ import {getProductById} from "@/api/products.ts";
 
 import {CopyIcon, WebIcon} from "@/icons";
 
-import {Button, Container, ExpandableText} from "@/components";
+import {Button, Container, ExpandableText, SpinnerLoader} from "@/components";
 
 import Gallery from "./Gallery/Gallery.tsx";
 
 import {
     designsCustomStyles,
     StyledActions,
-    StyledArticle,
+    StyledArticle, StyledEmptyText,
     StyledMaterial, StyledPriceItem, StyledPriceLabel,
     StyledPrices, StyledPriceValue,
     StyledSubTitle,
@@ -62,11 +62,9 @@ const ProductPage = () => {
         if (isLoading) {
             return
         }
-
         const handleOpenRemains = () => {
             navigate(`/${id}/remains`)
         }
-
         const unsubscribeMainButton = addMainButtonHandler(handleOpenRemains, 'Переглянути наявність')
         showMainButton()
 
@@ -76,17 +74,23 @@ const ProductPage = () => {
         };
     }, [isLoading]);
 
-    if (!product) return <h1>nothing found </h1>
+    if (isLoading) {
+        return (
+            <SpinnerLoader show={true}/>
+        )
+    }
+
+    if (!product) return <StyledEmptyText>Товару немає в наявності або взагалі не існує</StyledEmptyText>
 
     const name = product.name.replace(/\s*\(.*?\)\s*/g, '')
-    const designs = product.design?.split(',').filter((item) => item !== ' ').join(',') || ""
+    const designs = product.design?.split(',').filter((item) => item !== ' ').join(',') || 'Характеристики відсутні'
 
     const wholePrice = product.price && product.discount ? getDiscountPrice(product.price, product.discount) : product.price
     const dropPrice = product.price_d && product.discount ? getDiscountPrice(product.price_d, product.discount) : product.price_d
     const retailPrice = product.price_r
 
     const handleCopy = () => {
-        console.log('copy: ', id)
+        copyToClipboard('')
         toast.success('Скопійованно!')
     }
 
@@ -128,9 +132,14 @@ const ProductPage = () => {
             <StyledActions>
                 <Button variant={'outlined'} onClick={handleCopy}>
                     <CopyIcon/>
-                    Копіювати
+                    Посилання
                 </Button>
-                <Button variant={'outlined'}>
+                <Button
+                    as={'a'}
+                    variant={'outlined'}
+                    href={`https://b2b.lingerie.optbelya.com/ua/${product.article}`}
+                    target="_blank"
+                >
                     <WebIcon/>
                     Відкрити в B2B
                 </Button>

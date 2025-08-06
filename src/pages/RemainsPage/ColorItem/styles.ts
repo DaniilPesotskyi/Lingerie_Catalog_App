@@ -23,7 +23,7 @@ export const StyledSizesList = styled.ul`
     padding: 10px 0;
 
     border-radius: var(--border-radius);
-    background-color: var(--secondary-bg-color);
+    background-color: var(--bg-color);
 `
 
 export const StyledSizeItem = styled.li`
