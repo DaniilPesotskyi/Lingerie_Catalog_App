@@ -21,6 +21,11 @@ export const StyledOptionTitle = styled.h2`
     font-weight: 400;
 `
 
+export const customSearchbarStyles = css`
+    height: 50px;
+    margin-bottom: 20px;
+`
+
 export const StyledOptionsList = styled.ul`
     border-radius: var(--border-radius);
     background-color: var(--bg-color);

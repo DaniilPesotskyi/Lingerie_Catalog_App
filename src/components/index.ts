@@ -8,3 +8,5 @@ export {default as Collapse} from './Collapse/Collapse'
 
 export {default as IconButton} from './IconButton/IconButton'
 export {default as Button} from './Button/Button'
+
+export {default as Input} from './Input/Input'

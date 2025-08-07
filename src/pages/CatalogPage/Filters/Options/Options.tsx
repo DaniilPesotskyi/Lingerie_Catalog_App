@@ -1,4 +1,4 @@
-import {type FC, useEffect, useMemo, useState} from "react";
+import {type ChangeEvent, type FC, useEffect, useMemo, useState} from "react";
 import {useSearchParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 
@@ -10,9 +10,15 @@ import {getFilters} from "@/api/filters.ts";
 
 import {useTelegram} from "@/hooks";
 
-import {SpinnerLoader} from "@/components";
+import {Input, SpinnerLoader} from "@/components";
 
-import {StyledOptionsButton, StyledOptionsHeading, StyledOptionsList, StyledOptionTitle} from "./styles.ts";
+import {
+    customSearchbarStyles,
+    StyledOptionsButton,
+    StyledOptionsHeading,
+    StyledOptionsList,
+    StyledOptionTitle
+} from "./styles.ts";
 
 interface IOptionsProps {
     filter: keyof FiltersToRenderType
@@ -36,6 +42,8 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
 
     const querySearchParams = new URLSearchParams(searchParams.toString())
     querySearchParams.delete(filter)
+
+    const [searchQuery, setSearchQuery] = useState('')
 
     const {data: filters, isLoading} = useQuery<IFilters>({
         queryKey: ['filters', querySearchParams.toString()],
@@ -88,6 +96,10 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
 
     }, [selectedFilters, currentValues])
 
+    const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value)
+    }
+
     const allOptions = useMemo(() => {
         if (filter === 'articles') {
             return options.map(o => (o as IArticleItem).article)
@@ -118,7 +130,7 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
 
     const optionsToRender = () => {
         return [...allOptions]
-            // .filter(item => item.toLowerCase().includes(searchQuery.toLowerCase()))
+            .filter(item => item.toLowerCase().includes(searchQuery.toLowerCase()))
             .sort((a) =>
                 availableOptions.includes(a) ? -1 : 1
             );
@@ -133,6 +145,13 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
             <StyledOptionsHeading>
                 <StyledOptionTitle>{FILTERS_LABEL[filter]}</StyledOptionTitle>
             </StyledOptionsHeading>
+
+            <Input
+                customStyles={customSearchbarStyles}
+                onChange={handleSearchQueryChange}
+                value={searchQuery}
+                placeholder={'Пошук'}
+            />
 
             <StyledOptionsList>
                 {optionsToRender().map(i => (
