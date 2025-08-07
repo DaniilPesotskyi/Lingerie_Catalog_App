@@ -1,27 +1,15 @@
-import {Container, IconButton} from "@/components";
+import {Container} from "@/components";
 
-import {FilterIcon} from "@/icons";
+import Header from "@/layouts/Header/Header.tsx";
 
 import ProductsList from "./ProductsList/ProductsList.tsx";
 import Filters from "./Filters/Filters.tsx";
 
-import {PageHeading} from "./styles.ts";
-
 const CatalogPage = () => {
-
-    const handleMenuOpen = () => {
-        document.body.classList.add('menu-open')
-        document.body.classList.add('no-scroll')
-    }
 
     return (
         <Container>
-            <PageHeading>
-                Каталог
-                <IconButton onClick={handleMenuOpen}>
-                    <FilterIcon/>
-                </IconButton>
-            </PageHeading>
+            <Header/>
 
             <Filters/>
 
