@@ -21,7 +21,7 @@ const RootLayout = () => {
     useEffect(() => {
         const command = queryParams.get("tgWebAppStartParam") ? queryParams.get("tgWebAppStartParam") : "";
         if (command) {
-            navigate(command.replaceAll('_', '+'))
+            navigate(command.replaceAll('_', '%20'))
         }
     }, []);
 
