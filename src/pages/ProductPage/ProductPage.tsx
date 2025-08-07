@@ -95,7 +95,7 @@ const ProductPage = () => {
     const hasDiscount = Boolean(product.discount)
 
     const handleCopy = () => {
-        copyToClipboard(`https://t.me/Lingerie_mini_Catalog_Bot/app?startapp=${product.article}`)
+        copyToClipboard(`https://t.me/Lingerie_mini_Catalog_Bot/app?startapp=${product.article.replaceAll(' ', '_')}`)
         toast.success('Скопійованно!')
     }
 

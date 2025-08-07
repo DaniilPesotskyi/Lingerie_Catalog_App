@@ -16,24 +16,6 @@
 
     --separator-color: rgba(148, 148, 148, 0.3);
 
-    /*ALERT*/
-    --alert-error-border-color: #FF9494;
-    --alert-error-bg-color: #FFD6D6;
-    --alert-error-color: #A80000;
-
-    --alert-info-border-color: #94E4FF;
-    --alert-info-bg-color: #D6F5FF;
-    --alert-info-color: #0098A8;
-
-    --alert-warning-border-color: #FFD194;
-    --alert-warning-bg-color: #FFEDD6;
-    --alert-warning-color: #A85F00;
-
-    --alert-success-border-color: #A0FF94;
-    --alert-success-bg-color: #D6FFDF;
-    --alert-success-color: #00A841;
-    /**/
-
     /*Z-Index*/
     --backdrop-z-index: 1000;
     --drawer-z-index: 1200;
