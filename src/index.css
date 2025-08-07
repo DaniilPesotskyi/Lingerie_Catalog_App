@@ -7,6 +7,9 @@
     --selected-item-color: #0088cc;
     --selected-item-bg-color: #f4faff;
 
+    --button-hover-scale: 1.1;
+    --button-active-scale: 0.9;
+
     --success-color: #00A841;
     --danger-color: var(--tg-theme-destructive-text-color);
     --discount-color: #dc7c00;
@@ -48,6 +51,20 @@ body {
 
     font-family: var(--primary-ff), serif;
     color: var(--text-color);
+}
+
+button, a {
+    &:active {
+        transform: scale(var(--button-active-scale));
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            transform: scale(var(--button-hover-scale));
+        }
+    }
+
+    transition: var(--transition);
 }
 
 h1,
