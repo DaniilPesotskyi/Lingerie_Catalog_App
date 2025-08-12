@@ -14,6 +14,7 @@ import {
     StyledSizeFilter,
     toggleButtonCustomStyles
 } from "./styles.ts";
+import {getColorBackground} from "@/utils";
 
 interface IRemainsFiltersProps {
     variations: IProductVariation[]
@@ -120,12 +121,14 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({variations}) => {
         return allColors.map(color => {
             const isAvailable = availableColors.includes(color);
             const isActive = filters.colors.includes(color);
+            const backgroundColor = getColorBackground(color)
 
             if (!isAvailable && !isActive) return null;
 
             return (
                 <li key={color}>
                     <StyledColorFilter
+                        style={{backgroundColor: backgroundColor}}
                         onClick={() => handleColorToggle(color)}
                         active={isActive}
                     >

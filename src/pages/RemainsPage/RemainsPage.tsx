@@ -19,7 +19,7 @@ import {
     StyledRemainsHeading,
     StyledRemainsArticle,
     StyledRemainsTitle,
-    StyledRemainsList
+    StyledRemainsList, StyledEmptyText
 } from "./styles.ts";
 
 const variants = {
@@ -104,15 +104,22 @@ const RemainsPage = () => {
             <RemainsFilter variations={variations}/>
 
             <StyledRemainsList>
-                {Object.keys(variationsToRender).map(color => (
-                    <li key={color}>
-                        <ColorItem
-                            color={color}
-                            items={variationsToRender[color]}
-                            isDefaultOpen={colorsLength <= 2}
-                        />
-                    </li>
-                ))}
+                {Object.keys(variationsToRender).length > 0 ? (
+                    <>
+                        {Object.keys(variationsToRender).map(color => (
+                            <li key={color}>
+                                <ColorItem
+                                    color={color}
+                                    items={variationsToRender[color]}
+                                    isDefaultOpen={colorsLength <= 2}
+                                />
+                            </li>
+                        ))}
+                    </>
+                ) : (
+                    <StyledEmptyText>Такого немає в наявності :(</StyledEmptyText>
+                )}
+
             </StyledRemainsList>
         </StyledRemainsContainer>
     )

@@ -44,3 +44,12 @@ export const StyledRemainsArticle = styled.p`
 export const StyledRemainsList = styled.ul`
 `
 
+export const StyledEmptyText = styled.p`
+    width: 100%;
+    margin-top: 30px;
+    
+    font-size: 18px;
+    color: var(--text-color);
+    text-align: center;
+`
+
