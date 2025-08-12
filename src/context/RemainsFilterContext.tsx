@@ -8,7 +8,7 @@ interface IRemainsFiltersContext {
     filters: Record<keyof FiltersToRenderType, string[]>
     toggleFilter: (filter: keyof FiltersToRenderType, item: string) => void
     setInitialFilters: (filter: keyof FiltersToRenderType, value: string[]) => void
-    clearFilters: (filter: keyof FiltersToRenderType) => void
+    clearFilters: () => void
 }
 
 interface IRemainsFiltersProviderProps {
