@@ -2,7 +2,7 @@
 
 import React, {createContext, useContext, useState} from "react";
 
-import {type FiltersToRenderType} from "@/types/filters";
+import type {FiltersToRenderType} from "@/types/filters";
 
 interface IRemainsFiltersContext {
     filters: Record<keyof FiltersToRenderType, string[]>
