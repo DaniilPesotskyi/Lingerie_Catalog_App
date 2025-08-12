@@ -9,7 +9,10 @@ import type {IProductExtended} from "@/types/product";
 
 import {getProductById} from "@/api/products.ts";
 
+import {useRemainsFilters} from "@/context/RemainsFilterContext.tsx";
+
 import ColorItem from "./ColorItem/ColorItem.tsx";
+import RemainsFilter from "./RemainsFilter/RemainsFilter.tsx";
 
 import {
     StyledRemainsContainer,
@@ -31,6 +34,8 @@ const variants = {
 const RemainsPage = () => {
     const {id} = useParams()
     const {telegram, showMainButton, hideMainButton} = useTelegram()
+
+    const {filters} = useRemainsFilters()
 
     const {data: product} = useQuery<IProductExtended>({
         queryKey: ['product', id],
@@ -65,6 +70,19 @@ const RemainsPage = () => {
 
     const colorsLength = Object.keys(variationsByColors).length;
 
+    const filteredByColors = filters.colors.length
+        ? Object.entries(variationsByColors).filter(([color]) => filters.colors.includes(color))
+        : Object.entries(variationsByColors)
+
+    const filteredVariations = filters.sizes.length
+        ? filteredByColors.map(([color, variations]) => [
+            color,
+            variations.filter(variation => filters.sizes.includes(variation.size))
+        ]).filter(([, variations]) => variations.length > 0)
+        : filteredByColors
+
+    const variationsToRender = Object.fromEntries(filteredVariations)
+
     return (
         <StyledRemainsContainer
             as={motion.div}
@@ -82,12 +100,15 @@ const RemainsPage = () => {
                     {id}
                 </StyledRemainsArticle>
             </StyledRemainsHeading>
+
+            <RemainsFilter variations={variations}/>
+
             <StyledRemainsList>
-                {Object.keys(variationsByColors).map(color => (
+                {Object.keys(variationsToRender).map(color => (
                     <li key={color}>
                         <ColorItem
                             color={color}
-                            items={variationsByColors[color]}
+                            items={variationsToRender[color]}
                             isDefaultOpen={colorsLength <= 2}
                         />
                     </li>

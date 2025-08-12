@@ -26,6 +26,7 @@ import {
     StyledSubTitle,
     StyledTitle
 } from "./styles.ts";
+import {RemainsFiltersProvider} from "@/context/RemainsFilterContext.tsx";
 
 const ProductPage = () => {
     const {id} = useParams();
@@ -161,7 +162,9 @@ const ProductPage = () => {
                 </Button>
             </StyledActions>
 
-            <Outlet/>
+           <RemainsFiltersProvider>
+               <Outlet/>
+           </RemainsFiltersProvider>
         </Container>
     )
 }

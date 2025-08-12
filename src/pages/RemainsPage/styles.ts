@@ -7,6 +7,7 @@ export const StyledRemainsContainer = styled.div`
 
     width: 100%;
     height: 100vh;
+    padding: 0 10px;
 
     background-color: var(--secondary-bg-color);
 
@@ -41,6 +42,5 @@ export const StyledRemainsArticle = styled.p`
 `
 
 export const StyledRemainsList = styled.ul`
-    padding: 0 10px;
 `
 

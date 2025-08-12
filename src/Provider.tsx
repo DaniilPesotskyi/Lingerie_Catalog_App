@@ -13,11 +13,11 @@ const Provider: FC<IProviderProps> = ({children}) => {
     return (
         <>
             <QueryProvider>
-                <UserContextProvider>
-                    <ToastsProvider>
+                <ToastsProvider>
+                    <UserContextProvider>
                         {children}
-                    </ToastsProvider>
-                </UserContextProvider>
+                    </UserContextProvider>
+                </ToastsProvider>
             </QueryProvider>
         </>
     )
