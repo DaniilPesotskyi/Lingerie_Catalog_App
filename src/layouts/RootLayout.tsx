@@ -1,16 +1,22 @@
 import {useEffect} from "react";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 
+import {sendStat} from "@/api/stats.ts";
+
 import {useTelegram} from "@/hooks";
 
 const RootLayout = () => {
-    const {telegram} = useTelegram()
+    const {telegram, user} = useTelegram()
     const location = useLocation()
     const navigate = useNavigate()
 
     const queryParams = new URLSearchParams(location.search)
 
     useEffect(() => {
+
+        const time = new Date().toTimeString().slice(0, 5)
+        sendStat(user, telegram.platform, time)
+
         telegram.enableClosingConfirmation()
         telegram.disableVerticalSwipes()
         telegram.MainButton.setParams({color: '#25b672'})
