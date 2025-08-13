@@ -83,6 +83,8 @@ const RemainsPage = () => {
 
     const variationsToRender = Object.fromEntries(filteredVariations)
 
+    const defaultOpen = colorsLength <= 2 || (filters.sizes.length > 0 && filters.sizes.length < 6)
+
     return (
         <StyledRemainsContainer
             as={motion.div}
@@ -111,7 +113,7 @@ const RemainsPage = () => {
                                 <ColorItem
                                     color={color}
                                     items={variationsToRender[color]}
-                                    isDefaultOpen={colorsLength <= 2}
+                                    isDefaultOpen={defaultOpen}
                                 />
                             </li>
                         ))}

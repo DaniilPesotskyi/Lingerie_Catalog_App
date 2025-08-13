@@ -1,4 +1,4 @@
-import {type FC, useState} from "react";
+import {type FC, useEffect, useState} from "react";
 
 import type {IProductVariation} from "@/types/product";
 
@@ -22,7 +22,11 @@ interface IColorItemProps {
 }
 
 const ColorItem: FC<IColorItemProps> = ({color, items, isDefaultOpen}) => {
-    const [isOpen, setIsOpen] = useState(isDefaultOpen);
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        setIsOpen(isDefaultOpen)
+    }, [isDefaultOpen]);
 
     const toggleOpen = () => setIsOpen(prevState => !prevState);
 
