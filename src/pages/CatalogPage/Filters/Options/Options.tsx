@@ -23,7 +23,6 @@ import {
 interface IOptionsProps {
     filter: keyof FiltersToRenderType
     options: IArticleItem[] | IFilterItem[] | IDesignItem[]
-
     onClose: () => void
 }
 
@@ -58,9 +57,6 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
         return () => {
             unsubscribeBackButton()
             telegram.setHeaderColor('bg_color')
-
-            hideMainButton()
-
             document.body.classList.remove('no-scroll')
         };
     }, [])
@@ -94,7 +90,7 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
             unsubscribeMainButton()
         }
 
-    }, [selectedFilters, currentValues])
+    }, [selectedFilters, currentValues, addMainButtonHandler, showMainButton, hideMainButton])
 
     const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value)
@@ -111,7 +107,7 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
         }
 
         return options.map(o => (o as IFilterItem))
-    }, [filters, filter])
+    }, [options, filter])
 
     const availableOptions = useMemo(() => {
         if (!filters) return []

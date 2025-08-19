@@ -20,7 +20,14 @@ import {StyledFiltersWrap, StyledHeading, StyledPickerWrap, StyledTitle} from ".
 
 const Filters = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const {addBackButtonHandler, showBackButton, hideBackButton} = useTelegram()
+    const {
+        addBackButtonHandler,
+        showBackButton,
+        hideBackButton,
+        addMainButtonHandler,
+        showMainButton,
+        hideMainButton
+    } = useTelegram()
 
     const {data: filters} = useQuery<IFilters>({
         queryKey: ['filters'],
@@ -28,6 +35,7 @@ const Filters = () => {
     })
 
     const [openedFilter, setOpenedFilter] = useState<keyof FiltersToRenderType | null>(null)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const handleFiltersClose = () => {
         document.body.classList.remove("menu-open");
@@ -46,6 +54,8 @@ const Filters = () => {
     useEffect(() => {
         let hasClass = document.body.classList.contains("menu-open");
         let unsubscribeBackButton: (() => void) | null = null;
+
+        setIsMenuOpen(hasClass);
 
         const backHandler = () => {
             if (openedFilter) {
@@ -66,6 +76,8 @@ const Filters = () => {
                     );
 
                     if (currentHasClass !== hasClass) {
+                        setIsMenuOpen(currentHasClass);
+
                         if (currentHasClass) {
                             unsubscribeBackButton = addBackButtonHandler(backHandler);
                             showBackButton();
@@ -97,17 +109,25 @@ const Filters = () => {
 
     useEffect(() => {
         let unsubscribeBackButton: (() => void) | undefined;
+        let unsubscribeMainButton: (() => void) | undefined;
 
-        if (!openedFilter) {
-            unsubscribeBackButton = addBackButtonHandler(handleFiltersClose)
+        if (isMenuOpen && !openedFilter) {
+            unsubscribeBackButton = addBackButtonHandler(handleFiltersClose);
+            unsubscribeMainButton = addMainButtonHandler(handleFiltersClose, 'ДО КАТАЛОГУ');
+            showMainButton();
+        } else {
+            hideMainButton();
         }
 
         return () => {
             if (unsubscribeBackButton) {
                 unsubscribeBackButton();
             }
+            if (unsubscribeMainButton) {
+                unsubscribeMainButton();
+            }
         };
-    }, [openedFilter]);
+    }, [isMenuOpen, openedFilter, addBackButtonHandler, addMainButtonHandler, showMainButton, hideMainButton]);
 
     if (!filters) {
         return (
