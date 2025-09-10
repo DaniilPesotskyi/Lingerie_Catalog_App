@@ -5,7 +5,7 @@ import {useInView} from "react-intersection-observer";
 
 import type {IProductPreview} from "@/types/product";
 
-import {getProducts} from "@/api/products.ts";
+import { productsService } from "@/services";
 
 import {SpinnerLoader} from "@/components";
 
@@ -32,7 +32,7 @@ const ProductsList = () => {
             params.set('offset', pageParam.toString());
             params.set('limit', '20');
 
-            return await getProducts(params.toString())
+            return await productsService.getProducts(Object.fromEntries(params))
         },
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {

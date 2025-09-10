@@ -6,7 +6,7 @@ import type {FiltersToRenderType, IArticleItem, IDesignItem, IFilterItem, IFilte
 
 import FILTERS_LABEL from "@/constants/filtersLabel.ts";
 
-import {getFilters} from "@/api/filters.ts";
+import { filtersService } from "@/services";
 
 import {useTelegram} from "@/hooks";
 
@@ -46,7 +46,7 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
 
     const {data: filters, isLoading} = useQuery<IFilters>({
         queryKey: ['filters', querySearchParams.toString()],
-        queryFn: async () => await getFilters(querySearchParams.toString())
+        queryFn: async () => await filtersService.getFilters(Object.fromEntries(querySearchParams))
     })
 
     useEffect(() => {

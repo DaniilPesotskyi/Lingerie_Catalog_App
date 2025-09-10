@@ -10,7 +10,7 @@ import {EffectCoverflow} from "swiper/modules";
 
 import type {IProductContent} from "@/types/product";
 
-import {getProductContent} from "@/api/products.ts";
+import { productsService } from "@/services";
 
 import {NoPhotographyIcon} from "@/icons";
 
@@ -26,7 +26,7 @@ const Gallery = () => {
 
     const {data: content, isLoading} = useQuery<IProductContent>({
         queryKey: ['content', id],
-        queryFn: async () => await getProductContent(id as string)
+        queryFn: async () => await productsService.getProductContent(id as string)
     })
 
     if (isLoading) {

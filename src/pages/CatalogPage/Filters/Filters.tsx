@@ -3,7 +3,7 @@ import {useSearchParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {AnimatePresence, motion} from "framer-motion";
 
-import {getFilters} from "@/api/filters.ts";
+import { filtersService } from "@/services";
 
 import useTelegram from "@/hooks/useTelegram.ts";
 
@@ -31,7 +31,7 @@ const Filters = () => {
 
     const {data: filters} = useQuery<IFilters>({
         queryKey: ['filters'],
-        queryFn: async () => await getFilters(searchParams.toString())
+        queryFn: async () => await filtersService.getFilters(Object.fromEntries(searchParams))
     })
 
     const [openedFilter, setOpenedFilter] = useState<keyof FiltersToRenderType | null>(null)

@@ -9,7 +9,7 @@ import {copyToClipboard, getDiscountPrice} from "@/utils";
 
 import {useTelegram} from "@/hooks";
 
-import {getProductById} from "@/api/products.ts";
+import { productsService } from "@/services";
 
 import {LinkIcon, WebIcon} from "@/icons";
 
@@ -43,7 +43,7 @@ const ProductPage = () => {
 
     const {data: product, isLoading} = useQuery<IProductExtended>({
         queryKey: ['product', id],
-        queryFn: async () => await getProductById(id as string),
+        queryFn: async () => await productsService.getProductById(id as string),
     })
 
     useEffect(() => {

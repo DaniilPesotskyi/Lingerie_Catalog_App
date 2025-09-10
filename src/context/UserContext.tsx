@@ -1,6 +1,6 @@
 import {createContext, type FC, type ReactNode, useCallback, useContext, useEffect, useState} from "react";
 
-import {getChatMember} from "@/api/telegram.ts";
+import { telegramService } from "@/services";
 
 interface IUserContext {
     user: { id: number },
@@ -29,8 +29,8 @@ export const UserContextProvider: FC<IUserProviderProps> = ({children}) => {
 
         try {
             setIsLoading(true);
-            const member = await getChatMember(user.id);
-            const memberStatus = member.status;
+            const response = await telegramService.getChatMember(user.id);
+            const memberStatus = response.result.status;
 
             const hasValidAccess = !['kicked', 'left'].includes(memberStatus);
             setHasAccess(hasValidAccess);

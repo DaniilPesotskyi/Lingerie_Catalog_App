@@ -7,7 +7,7 @@ import {useTelegram} from "@/hooks";
 
 import type {IProductExtended} from "@/types/product";
 
-import {getProductById} from "@/api/products.ts";
+import { productsService } from "@/services";
 
 import {useRemainsFilters} from "@/context/RemainsFilterContext.tsx";
 
@@ -39,7 +39,7 @@ const RemainsPage = () => {
 
     const {data: product} = useQuery<IProductExtended>({
         queryKey: ['product', id],
-        queryFn: async () => await getProductById(id as string),
+        queryFn: async () => await productsService.getProductById(id as string),
     })
 
     useEffect(() => {

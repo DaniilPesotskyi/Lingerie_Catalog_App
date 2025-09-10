@@ -9,7 +9,7 @@ import {useTelegram} from "@/hooks";
 
 import {getColorTranslation} from "@/utils";
 
-import {getProductContent} from "@/api/products.ts";
+import { productsService } from "@/services";
 
 import {StyledContentSelect, StyledEmptyText, StyledGalleryContainer, StylesPhotosList} from "./styles.ts";
 
@@ -30,7 +30,7 @@ const GalleryPage = () => {
 
     const {data: content} = useQuery<IProductContent>({
         queryKey: ['content', id],
-        queryFn: async () => await getProductContent(id as string)
+        queryFn: async () => await productsService.getProductContent(id as string)
     })
 
     useEffect(() => {
