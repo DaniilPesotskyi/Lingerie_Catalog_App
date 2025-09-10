@@ -1,12 +1,11 @@
 import {useEffect} from "react";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 
-import {sendStat} from "@/api/stats.ts";
 
 import {useTelegram} from "@/hooks";
 
 const RootLayout = () => {
-    const {telegram, user} = useTelegram()
+    const {telegram} = useTelegram()
     const location = useLocation()
     const navigate = useNavigate()
 
