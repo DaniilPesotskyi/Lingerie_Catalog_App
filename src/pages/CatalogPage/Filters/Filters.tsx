@@ -5,7 +5,7 @@ import {AnimatePresence, motion} from "framer-motion";
 
 import { filtersService } from "@/services";
 
-import useTelegram from "@/hooks/useTelegram.ts";
+import { useTelegram, useStats } from "@/hooks";
 
 import type {FiltersToRenderType, IFilters} from "@/types/filters";
 
@@ -28,6 +28,7 @@ const Filters = () => {
         showMainButton,
         hideMainButton
     } = useTelegram()
+    const { sendStat } = useStats()
 
     const {data: filters} = useQuery<IFilters>({
         queryKey: ['filters'],
@@ -38,6 +39,11 @@ const Filters = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const handleFiltersClose = () => {
+        sendStat({
+            action: 'filter',
+            comment: searchParams.toString()
+        });
+        
         document.body.classList.remove("menu-open");
         document.body.classList.remove("no-scroll");
     }

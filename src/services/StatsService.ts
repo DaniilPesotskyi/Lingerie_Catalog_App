@@ -1,5 +1,8 @@
 import { BaseService } from './BaseService';
-import type { IUser } from '@/types/user';
+
+import type { IStat } from '@/types/stats';
+
+type ISendStatPayload = Omit<IStat, 'date'>
 
 export class StatsService extends BaseService {
   constructor() {
@@ -8,17 +11,17 @@ export class StatsService extends BaseService {
     });
   }
 
-  async sendStat(user: IUser, platform: string, time: string): Promise<any> {
-    const data = {
+  async sendStat(data: Omit<ISendStatPayload, 'time'>): Promise<any> {
+
+    const time = new Date().toTimeString().slice(0, 5)
+
+    const payload: ISendStatPayload = {
+      ...data,
       time,
-      id: user.id,
-      name: user.first_name,
-      platform,
-      comment: 'comment',
     };
 
     try {
-      const response = await this.post<any>('', data);
+      const response = await this.post<any>('', payload);
       console.log('Stats sent successfully:', response);
       return response;
     } catch (error) {

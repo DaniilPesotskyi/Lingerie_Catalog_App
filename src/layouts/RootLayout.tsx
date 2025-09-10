@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
-import { useTelegram } from "@/hooks";
+import { useTelegram, useStats } from "@/hooks";
 
-import { statsService } from "@/services";
+import { useSession } from "@/context/SessionContext";
 
 const RootLayout = () => {
     const { telegram, user } = useTelegram()
+    const { session, setSession } = useSession()
+    const { sendStat } = useStats()
+
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -14,8 +17,8 @@ const RootLayout = () => {
 
     useEffect(() => {
 
-        const time = new Date().toTimeString().slice(0, 5)
-        statsService.sendStat(user, telegram.platform, time)
+        const session = user.id.toString() + '-' + new Date().getTime().toString()
+        setSession(session)
 
         telegram.enableClosingConfirmation()
         telegram.disableVerticalSwipes()
@@ -23,6 +26,15 @@ const RootLayout = () => {
         telegram.lockOrientation()
         telegram.expand()
     }, []);
+
+    useEffect(() => {
+        if (session) {
+            sendStat({
+                action: 'start',
+                comment: 'no comment'
+            });
+        }
+    }, [session, sendStat]);
 
     useEffect(() => {
         const command = queryParams.get("tgWebAppStartParam") ? queryParams.get("tgWebAppStartParam") : "";
