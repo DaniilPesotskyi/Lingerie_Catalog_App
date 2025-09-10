@@ -1,11 +1,12 @@
-import {useEffect} from "react";
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
+import { useTelegram } from "@/hooks";
 
-import {useTelegram} from "@/hooks";
+import { statsService } from "@/services";
 
 const RootLayout = () => {
-    const {telegram} = useTelegram()
+    const { telegram, user } = useTelegram()
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -14,11 +15,11 @@ const RootLayout = () => {
     useEffect(() => {
 
         const time = new Date().toTimeString().slice(0, 5)
-        sendStat(user, telegram.platform, time)
+        statsService.sendStat(user, telegram.platform, time)
 
         telegram.enableClosingConfirmation()
         telegram.disableVerticalSwipes()
-        telegram.MainButton.setParams({color: '#25b672'})
+        telegram.MainButton.setParams({ color: '#25b672' })
         telegram.lockOrientation()
         telegram.expand()
     }, []);
@@ -32,7 +33,7 @@ const RootLayout = () => {
 
     return (
         <>
-            <Outlet/>
+            <Outlet />
         </>
     )
 }
