@@ -8,7 +8,7 @@ export class StatsService extends BaseService {
     });
   }
 
-  async sendStat(user: IUser, platform: string, time: string) {
+  async sendStat(user: IUser, platform: string, time: string): Promise<any> {
     const data = {
       time,
       id: user.id,
@@ -18,7 +18,7 @@ export class StatsService extends BaseService {
     };
 
     try {
-      const response = await this.post('', data);
+      const response = await this.post<any>('', data);
       console.log('Stats sent successfully:', response);
       return response;
     } catch (error) {

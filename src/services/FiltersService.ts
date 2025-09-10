@@ -1,12 +1,13 @@
 import { BaseService } from './BaseService';
+import type { IFilters } from '@/types/filters';
 
 export class FiltersService extends BaseService {
   constructor() {
     super(import.meta.env.VITE_API_URL);
   }
 
-  async getFilters(params?: Record<string, string>) {
-    return this.get('/filters', params);
+  async getFilters(params?: Record<string, string>): Promise<IFilters> {
+    return this.get<IFilters>('/filters', params);
   }
 }
 
