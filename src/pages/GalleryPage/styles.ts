@@ -28,6 +28,7 @@ export const StyledContentSelect = styled.select`
     margin: 0 auto 20px auto;
 
     border-radius: var(--border-radius);
+    background-color: var(--bg-color);
 
     font-size: 16px;
     color: var(--text-color);
