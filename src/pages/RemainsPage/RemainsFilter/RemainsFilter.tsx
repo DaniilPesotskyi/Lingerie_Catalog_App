@@ -1,10 +1,10 @@
-import {type FC, useState, useMemo, useCallback} from "react";
+import { type FC, useState, useMemo, useCallback } from "react";
 
-import type {IProductVariation} from "@/types/product";
+import type { IProductVariation } from "@/types/product";
 
-import {useRemainsFilters} from "@/context/RemainsFilterContext.tsx";
+import { useRemainsFilters } from "@/context/RemainsFilterContext.tsx";
 
-import {Button, Collapse} from "@/components";
+import { Button, Collapse } from "@/components";
 
 import {
     clearButtonCustomStyles,
@@ -14,7 +14,8 @@ import {
     StyledSizeFilter,
     toggleButtonCustomStyles
 } from "./styles.ts";
-import {getColorBackground} from "@/utils";
+
+import { getColorBackground } from "@/utils";
 
 interface IRemainsFiltersProps {
     variations: IProductVariation[]
@@ -28,8 +29,8 @@ const FILTER_MAPPINGS = {
 type VariationKey = keyof typeof FILTER_MAPPINGS;
 type FilterKey = typeof FILTER_MAPPINGS[VariationKey];
 
-const RemainsFilter: FC<IRemainsFiltersProps> = ({variations}) => {
-    const {filters, toggleFilter, clearFilters} = useRemainsFilters();
+const RemainsFilter: FC<IRemainsFiltersProps> = ({ variations }) => {
+    const { filters, toggleFilter, clearFilters } = useRemainsFilters();
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleOpen = useCallback(() => setIsOpen(prev => !prev), []);
@@ -38,6 +39,7 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({variations}) => {
         (variationsList: IProductVariation[], key: VariationKey): string[] => {
             return Array.from(new Set(
                 variationsList
+                    .filter(variation => variation.available === true)
                     .map(variation => variation[key])
                     .filter(value => value != null)
                     .map(String)
@@ -49,6 +51,8 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({variations}) => {
     const getFilteredVariationsExcluding = useCallback(
         (excludeFilterType: FilterKey): IProductVariation[] => {
             return variations.filter(variation => {
+                if (variation.available !== true) return false;
+
                 return Object.entries(FILTER_MAPPINGS).every(([vKey, fKey]) => {
 
                     if (fKey === excludeFilterType) return true;
@@ -87,7 +91,7 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({variations}) => {
     const handleColorToggle = (color: string) => toggleFilter('colors', color)
 
     const hasActiveFilters = useMemo(() => Object.values(filters).some(filterArray => filterArray.length > 0), [filters])
-    const {allSizes, allColors, availableSizes, availableColors} = filterData;
+    const { allSizes, allColors, availableSizes, availableColors } = filterData;
 
     const renderSizes = () => {
         if (allSizes.length === 0) {
@@ -128,7 +132,7 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({variations}) => {
             return (
                 <li key={color}>
                     <StyledColorFilter
-                        style={{backgroundColor: backgroundColor}}
+                        style={{ background: backgroundColor }}
                         onClick={() => handleColorToggle(color)}
                         active={isActive}
                     >
