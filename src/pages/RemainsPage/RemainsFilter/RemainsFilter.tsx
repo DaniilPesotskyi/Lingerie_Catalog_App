@@ -1,4 +1,5 @@
 import { type FC, useState, useMemo, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import type { IProductVariation } from "@/types/product";
 
@@ -30,7 +31,8 @@ type VariationKey = keyof typeof FILTER_MAPPINGS;
 type FilterKey = typeof FILTER_MAPPINGS[VariationKey];
 
 const RemainsFilter: FC<IRemainsFiltersProps> = ({ variations }) => {
-    const { filters, toggleFilter, clearFilters } = useRemainsFilters();
+    const [searchParams] = useSearchParams()
+    const { filters, toggleFilter, clearFilters, setInitialFilters } = useRemainsFilters();
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleOpen = useCallback(() => setIsOpen(prev => !prev), []);
@@ -92,6 +94,21 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({ variations }) => {
 
     const hasActiveFilters = useMemo(() => Object.values(filters).some(filterArray => filterArray.length > 0), [filters])
     const { allSizes, allColors, availableSizes, availableColors } = filterData;
+
+    const globalSizes = searchParams.getAll('sizes');
+    const globalColors = searchParams.getAll('colors');
+    const hasGlobalFilters = globalSizes.length > 0 || globalColors.length > 0;
+
+    const handleApplyGlobalFilters = () => {
+        if (globalSizes.length > 0) {
+            const validSizes = globalSizes.filter(size => allSizes.includes(size));
+            setInitialFilters('sizes', validSizes);
+        }
+        if (globalColors.length > 0) {
+            const validColors = globalColors.filter(color => allColors.includes(color));
+            setInitialFilters('colors', validColors);
+        }
+    }
 
     const renderSizes = () => {
         if (allSizes.length === 0) {
@@ -164,6 +181,7 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({ variations }) => {
                         Видалити фільтри
                     </Button>
                 )}
+
             </Collapse>
 
             <Button
@@ -173,6 +191,15 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({ variations }) => {
             >
                 {isOpen ? 'Приховати фільтри' : 'Показати фільтри'}
             </Button>
+
+            {hasGlobalFilters && (
+                <Button
+                    variant='contained'
+                    onClick={handleApplyGlobalFilters}
+                >
+                    Застосувати глобальні фільтри
+                </Button>
+            )}
         </>
     );
 };
