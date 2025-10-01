@@ -12,3 +12,6 @@ export {default as SizeIcon} from './SizeIcon.tsx'
 
 export {default as LinkIcon} from './LinkIcon.tsx'
 export {default as WebIcon} from './WebIcon.tsx'
+
+export {default as SendIcon} from './SendIcon.tsx'
+export {default as DeleteRequestIcon} from './DeleteRequestIcon.tsx'

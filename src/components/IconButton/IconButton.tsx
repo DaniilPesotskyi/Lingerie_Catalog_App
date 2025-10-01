@@ -1,14 +1,14 @@
-import type {FC, HTMLAttributes, ReactNode} from "react";
+import type { FC, ReactNode } from "react";
 
-import type {IStyledComponent} from "@/types/components";
+import type { IStyledComponent } from "@/types/components";
 
-import {StyledIconButton} from "./styles.ts";
+import { StyledIconButton } from "./styles.ts";
 
-export interface IconButtonProps extends IStyledComponent, HTMLAttributes<HTMLButtonElement> {
+export interface IconButtonProps extends IStyledComponent, React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode,
 }
 
-const IconButton: FC<IconButtonProps> = ({children, ...props}) => {
+const IconButton: FC<IconButtonProps> = ({ children, ...props }) => {
     return (
         <StyledIconButton {...props}>
             {children}

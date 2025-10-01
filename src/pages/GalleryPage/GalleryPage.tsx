@@ -1,17 +1,20 @@
-import {type ChangeEvent, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
-import {motion} from "framer-motion";
-import {useQuery} from "@tanstack/react-query";
+import { type ChangeEvent, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 
-import type {IProductContent} from "@/types/product";
+import type { IProductContent } from "@/types/product";
 
-import {useTelegram} from "@/hooks";
+import { useTelegram } from "@/hooks";
 
-import {getColorTranslation} from "@/utils";
+import { getColorTranslation } from "@/utils";
 
 import { productsService } from "@/services";
 
-import {StyledContentSelect, StyledEmptyText, StyledGalleryContainer, StylesPhotosList} from "./styles.ts";
+import SendButton from "./SendButton.tsx";
+
+import { StyledActions, StyledContentSelect, StyledEmptyText, StyledGalleryContainer, StyledPhotoItem, StylesPhotosList } from "./styles.ts";
+
 
 const variants = {
     hidden: {
@@ -23,12 +26,12 @@ const variants = {
 }
 
 const GalleryPage = () => {
-    const {telegram, showMainButton, hideMainButton} = useTelegram()
-    const {id} = useParams()
+    const { telegram, showMainButton, hideMainButton } = useTelegram()
+    const { id } = useParams()
 
     const [currentContent, setCurrentContent] = useState<string | null>(null)
 
-    const {data: content} = useQuery<IProductContent>({
+    const { data: content } = useQuery<IProductContent>({
         queryKey: ['content', id],
         queryFn: async () => await productsService.getProductContent(id as string)
     })
@@ -81,7 +84,7 @@ const GalleryPage = () => {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            transition={{duration: 0.3}}
+            transition={{ duration: 0.3 }}
             variants={variants}
         >
             <StyledContentSelect
@@ -96,9 +99,12 @@ const GalleryPage = () => {
             {itemsToRender.length > 0 ? (
                 <StylesPhotosList>
                     {itemsToRender.map((photo, index) => (
-                        <li key={index}>
-                            <img src={photo} alt="photo"/>
-                        </li>
+                        <StyledPhotoItem key={index}>
+                            <img src={photo} alt="photo" />
+                            <StyledActions>
+                                <SendButton photoUrl={photo} />
+                            </StyledActions>
+                        </StyledPhotoItem>
                     ))}
                 </StylesPhotosList>
             ) : (

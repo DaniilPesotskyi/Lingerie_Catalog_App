@@ -45,6 +45,23 @@ export const StylesPhotosList = styled.ul`
     gap: 10px;
 `
 
+export const StyledPhotoItem = styled.li`
+    position: relative;
+`
+
+export const StyledActions = styled.div`
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+
+    display: flex;
+
+    padding: 4px;
+
+    border-radius: var(--border-radius);
+    background-color: var(--bg-color);
+`
+
 export const StyledEmptyText = styled.p`
     width: 100%;
 
@@ -52,3 +69,4 @@ export const StyledEmptyText = styled.p`
     color: #ffffff;
     text-align: center;
 `
+
