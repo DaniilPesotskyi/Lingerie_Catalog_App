@@ -65,7 +65,7 @@ const ProductPage = () => {
             return
         }
         const handleOpenRemains = () => {
-            navigate(`/${id}/remains`)
+            navigate(`/${id}/remains?${searchParams.toString()}`)
         }
         const unsubscribeMainButton = addMainButtonHandler(handleOpenRemains, 'Переглянути наявність')
         showMainButton()

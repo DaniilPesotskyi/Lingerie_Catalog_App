@@ -63,4 +63,11 @@ export const clearButtonCustomStyles = css`
 
 export const toggleButtonCustomStyles = css`
     justify-content: center;
+    
+    margin-bottom: 5px;
+`
+
+export const applyGlobalFiltersButtonStyles = css`
+    align-items: center;
+    justify-content: center;
 `

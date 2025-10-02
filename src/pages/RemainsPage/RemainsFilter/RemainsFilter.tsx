@@ -8,6 +8,7 @@ import { useRemainsFilters } from "@/context/RemainsFilterContext.tsx";
 import { Button, Collapse } from "@/components";
 
 import {
+    applyGlobalFiltersButtonStyles,
     clearButtonCustomStyles,
     StyledColorFilter,
     StyledFiltersList,
@@ -96,17 +97,52 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({ variations }) => {
     const { allSizes, allColors, availableSizes, availableColors } = filterData;
 
     const globalSizes = searchParams.getAll('sizes');
-    const globalColors = searchParams.getAll('colors');
-    const hasGlobalFilters = globalSizes.length > 0 || globalColors.length > 0;
+    const globalColorGroups = searchParams.getAll('colors');
+
+    const hasGlobalFiltersToApply = useMemo(() => {
+        if (globalSizes.length === 0 && globalColorGroups.length === 0) return false;
+
+        const availableVariations = variations.filter(v => v.available === true);
+        const colorGroupToColors = availableVariations.reduce<Record<string, Set<string>>>((acc, v) => {
+            const set = acc[v.color_group] ?? new Set<string>();
+            set.add(String(v.color));
+            acc[v.color_group] = set;
+            return acc;
+        }, {});
+
+        const currentSizes = filters.sizes;
+        const validGlobalSizes = globalSizes.filter(size => allSizes.includes(size));
+        const sizesChanged = JSON.stringify([...currentSizes].sort()) !== JSON.stringify([...validGlobalSizes].sort());
+
+        const currentColors = filters.colors;
+        const mappedColorsFromGroups = Array.from(new Set(
+            globalColorGroups.flatMap(group => Array.from(colorGroupToColors[group] ?? []))
+        )).filter(color => allColors.includes(color));
+
+        const colorsChanged = JSON.stringify([...currentColors].sort()) !== JSON.stringify([...mappedColorsFromGroups].sort());
+
+        return sizesChanged || colorsChanged;
+    }, [globalSizes, globalColorGroups, filters.sizes, filters.colors, allSizes, allColors, variations]);
 
     const handleApplyGlobalFilters = () => {
         if (globalSizes.length > 0) {
             const validSizes = globalSizes.filter(size => allSizes.includes(size));
             setInitialFilters('sizes', validSizes);
         }
-        if (globalColors.length > 0) {
-            const validColors = globalColors.filter(color => allColors.includes(color));
-            setInitialFilters('colors', validColors);
+        if (globalColorGroups.length > 0) {
+            const availableVariations = variations.filter(v => v.available === true);
+            const colorGroupToColors = availableVariations.reduce<Record<string, Set<string>>>((acc, v) => {
+                const set = acc[v.color_group] ?? new Set<string>();
+                set.add(String(v.color));
+                acc[v.color_group] = set;
+                return acc;
+            }, {});
+
+            const mappedColors = Array.from(new Set(
+                globalColorGroups.flatMap(group => Array.from(colorGroupToColors[group] ?? []))
+            )).filter(color => allColors.includes(color));
+
+            setInitialFilters('colors', mappedColors);
         }
     }
 
@@ -192,10 +228,11 @@ const RemainsFilter: FC<IRemainsFiltersProps> = ({ variations }) => {
                 {isOpen ? 'Приховати фільтри' : 'Показати фільтри'}
             </Button>
 
-            {hasGlobalFilters && (
+            {hasGlobalFiltersToApply && (
                 <Button
                     variant='contained'
                     onClick={handleApplyGlobalFilters}
+                    customStyles={applyGlobalFiltersButtonStyles}
                 >
                     Застосувати глобальні фільтри
                 </Button>
