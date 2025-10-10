@@ -6,7 +6,7 @@ export class ProductsService extends BaseService {
     super(import.meta.env.VITE_API_URL);
   }
 
-  async getProducts(params: Record<string, string>): Promise<IProductPreview[]> {
+  async getProducts(params: string): Promise<IProductPreview[]> {
     return this.get<IProductPreview[]>('/guest/products', params);
   }
 

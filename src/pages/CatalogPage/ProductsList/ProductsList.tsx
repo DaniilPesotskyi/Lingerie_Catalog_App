@@ -32,7 +32,7 @@ const ProductsList = () => {
             params.set('offset', pageParam.toString());
             params.set('limit', '20');
 
-            return await productsService.getProducts(Object.fromEntries(params))
+            return await productsService.getProducts(params.toString())
         },
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {

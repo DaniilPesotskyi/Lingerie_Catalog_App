@@ -34,8 +34,9 @@ export abstract class BaseService {
     );
   }
 
-  protected async get<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
-    const response: AxiosResponse<T> = await this.axiosInstance.get(endpoint, { params });
+  protected async get<T>(endpoint: string, params?: string): Promise<T> {
+    const url = params && params.length > 0 ? `${endpoint}?${params}` : endpoint;
+    const response: AxiosResponse<T> = await this.axiosInstance.get(url);
     return response.data;
   }
 

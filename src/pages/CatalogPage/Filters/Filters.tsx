@@ -32,7 +32,7 @@ const Filters = () => {
 
     const {data: filters} = useQuery<IFilters>({
         queryKey: ['filters'],
-        queryFn: async () => await filtersService.getFilters(Object.fromEntries(searchParams))
+        queryFn: async () => await filtersService.getFilters(searchParams.toString())
     })
 
     const [openedFilter, setOpenedFilter] = useState<keyof FiltersToRenderType | null>(null)

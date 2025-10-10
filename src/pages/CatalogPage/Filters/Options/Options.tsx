@@ -46,7 +46,7 @@ const Options: FC<IOptionsProps> = ({filter, onClose, options}) => {
 
     const {data: filters, isLoading} = useQuery<IFilters>({
         queryKey: ['filters', querySearchParams.toString()],
-        queryFn: async () => await filtersService.getFilters(Object.fromEntries(querySearchParams))
+        queryFn: async () => await filtersService.getFilters(querySearchParams.toString())
     })
 
     useEffect(() => {

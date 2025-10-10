@@ -6,7 +6,7 @@ export class FiltersService extends BaseService {
     super(import.meta.env.VITE_API_URL);
   }
 
-  async getFilters(params?: Record<string, string>): Promise<IFilters> {
+  async getFilters(params?: string): Promise<IFilters> {
     return this.get<IFilters>('/filters', params);
   }
 }
